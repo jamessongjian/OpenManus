@@ -4,8 +4,16 @@ from pydantic import BaseModel
 from typing import Optional
 import asyncio
 import json
+import sys
+import os
+from pathlib import Path
+
+# 添加项目根目录到Python路径
+project_root = str(Path(__file__).parent.parent.parent)
+sys.path.append(project_root)
+
+from config.config import AppConfig as Config
 from app.agent import Agent
-from app.config import Config
 
 app = FastAPI()
 

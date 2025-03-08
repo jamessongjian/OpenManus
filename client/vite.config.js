@@ -6,12 +6,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://doctorj.com.cn:8090',
+        target: 'http://doctorj.com.cn:8000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/api')
       },
       '/ws': {
-        target: 'ws://doctorj.com.cn:8090',
+        target: 'ws://doctorj.com.cn:8000',
         ws: true,
         changeOrigin: true
       }
