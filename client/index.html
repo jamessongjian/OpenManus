@@ -4,9 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenManus Agent</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 添加本地回退样式 -->
     <style>
+        .loading-fallback {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .main-content {
+            display: none;
+        }
+        body:not(.styles-loaded) .loading-fallback {
+            display: block;
+        }
+        body.styles-loaded .main-content {
+            display: flex;
+        }
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: #f8fafc;
@@ -45,9 +59,37 @@
             transition: all 0.3s ease;
         }
     </style>
+    <!-- 预加载 Tailwind CSS -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
+    
+    <!-- 加载 Tailwind CSS 和字体 -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" onload="document.body.classList.add('styles-loaded')">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 添加备用 CDN -->
+    <script>
+        function loadFallbackCSS() {
+            if (!document.body.classList.contains('styles-loaded')) {
+                const fallbackLink = document.createElement('link');
+                fallbackLink.href = 'https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css';
+                fallbackLink.rel = 'stylesheet';
+                fallbackLink.onload = () => document.body.classList.add('styles-loaded');
+                document.head.appendChild(fallbackLink);
+            }
+        }
+        // 如果主 CDN 5秒后还没加载完，尝试备用 CDN
+        setTimeout(loadFallbackCSS, 5000);
+    </script>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100">
-    <div class="flex h-screen p-4 gap-4">
+    <!-- 添加加载提示 -->
+    <div class="loading-fallback">
+        <p>页面正在加载中，请稍候...</p>
+        <p>如果页面长时间未加载，请确保您通过 HTTP 服务器访问此页面。</p>
+    </div>
+    
+    <div class="main-content flex h-screen p-4 gap-4">
         <!-- 左侧面板 -->
         <div class="w-1/2 flex flex-col gap-4">
             <!-- 信息记录区域 -->
