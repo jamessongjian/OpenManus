@@ -9,7 +9,7 @@ sys.path.append(project_root)
 
 from config.config import AppConfig as Config
 from typing import Optional, Callable, Any
-from app.agent.manus import Manus
+from app.agent.manus import Manus  # 从项目根目录导入
 from app.logger import logger
 
 class WebSocketLogHandler(logging.Handler):
