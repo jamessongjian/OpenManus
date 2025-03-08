@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenManus Agent</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .log-area {
+            height: 40vh;
+            overflow-y: auto;
+        }
+        .input-area {
+            height: calc(60vh - 4rem);
+        }
+        .browser-area {
+            height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- 左侧面板 -->
+        <div class="w-1/2 p-4 flex flex-col">
+            <!-- 信息记录区域 -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4 log-area">
+                <h2 class="text-xl font-bold mb-2">执行日志</h2>
+                <div id="logArea" class="font-mono text-sm whitespace-pre-wrap"></div>
+            </div>
+            
+            <!-- 用户输入区域 -->
+            <div class="bg-white rounded-lg shadow-md p-4 input-area">
+                <h2 class="text-xl font-bold mb-2">输入指令</h2>
+                <textarea id="userInput" class="w-full h-3/4 p-2 border rounded-lg resize-none" placeholder="请输入您的指令..."></textarea>
+                <button id="executeBtn" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">执行</button>
+            </div>
+        </div>
+        
+        <!-- 右侧浏览器展示区域 -->
+        <div class="w-1/2 p-4">
+            <div class="bg-white rounded-lg shadow-md p-4 browser-area">
+                <h2 class="text-xl font-bold mb-2">浏览器操作</h2>
+                <div id="browserArea" class="w-full h-[calc(100%-3rem)] bg-gray-50 rounded border"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://doctorj.com.cn:8090/api';
+        
+        document.getElementById('executeBtn').addEventListener('click', async () => {
+            const userInput = document.getElementById('userInput').value;
+            const logArea = document.getElementById('logArea');
+            const browserArea = document.getElementById('browserArea');
+            
+            try {
+                // 发送用户输入到服务器
+                const response = await fetch(`${API_BASE_URL}/execute`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: userInput })
+                });
+                
+                // 建立WebSocket连接接收实时更新
+                const ws = new WebSocket(`ws://doctorj.com.cn:8090/ws`);
+                
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'log') {
+                        logArea.innerHTML += `${data.message}\n`;
+                        logArea.scrollTop = logArea.scrollHeight;
+                    } else if (data.type === 'browser') {
+                        browserArea.innerHTML = data.content;
+                    }
+                };
+                
+            } catch (error) {
+                logArea.innerHTML += `错误: ${error.message}\n`;
+            }
+        });
+    </script>
+</body>
+</html> 
