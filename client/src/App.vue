@@ -1,123 +1,120 @@
 <template>
-  <div class="min-h-screen bg-gray-900 text-gray-100">
-    <div class="container mx-auto px-4 py-6">
+  <div class="min-h-screen bg-[#1a1a1a] text-gray-100 p-6">
+    <div class="max-w-[1800px] mx-auto">
       <!-- 顶部标题栏 -->
       <div class="flex items-center justify-between mb-6">
         <div class="flex items-center space-x-3">
           <div class="text-2xl font-bold text-white">
             OpenManus Agent
           </div>
-          <el-tag 
-            :type="wsStatus === 'connected' ? 'success' : 'warning'" 
-            size="small"
-            class="border-none"
+          <div 
+            class="px-2 py-1 text-sm rounded-full" 
+            :class="wsStatus === 'connected' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'"
           >
             {{ wsStatus === 'connected' ? '已连接' : '未连接' }}
-          </el-tag>
+          </div>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- 左侧面板 -->
         <div class="space-y-6">
-          <!-- 日志区域 -->
-          <div class="bg-gray-800 rounded-lg border border-gray-700">
-            <div class="p-4 border-b border-gray-700">
+          <!-- 执行步骤区域 -->
+          <div class="bg-[#2a2a2a] rounded-xl border border-gray-800">
+            <div class="p-4 border-b border-gray-800">
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
-                  <div class="h-2 w-2 rounded-full bg-emerald-400"></div>
+                  <div class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
                   <h2 class="text-lg font-medium">执行步骤</h2>
                 </div>
-                <el-button-group>
-                  <el-button size="small" type="info" text @click="clearLogs">
-                    <el-icon><Delete /></el-icon>
-                  </el-button>
-                  <el-button size="small" type="info" text @click="downloadLogs">
-                    <el-icon><Download /></el-icon>
-                  </el-button>
-                </el-button-group>
+                <div class="flex space-x-2">
+                  <button 
+                    @click="clearLogs" 
+                    class="p-1.5 rounded-lg hover:bg-gray-700/50 text-gray-400 hover:text-gray-300 transition-colors"
+                  >
+                    <Delete class="w-4 h-4" />
+                  </button>
+                  <button 
+                    @click="downloadLogs" 
+                    class="p-1.5 rounded-lg hover:bg-gray-700/50 text-gray-400 hover:text-gray-300 transition-colors"
+                  >
+                    <Download class="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
             <div 
               ref="logAreaRef" 
-              class="h-[40vh] overflow-y-auto font-mono text-sm p-4 space-y-1 custom-scrollbar"
+              class="h-[40vh] overflow-y-auto font-mono text-sm p-4 space-y-1.5 custom-scrollbar"
             >
               <div 
                 v-for="(log, index) in logs" 
                 :key="index" 
-                class="py-1 px-2 rounded flex items-start space-x-2"
+                class="py-1.5 px-3 rounded flex items-start space-x-3 transition-colors"
                 :class="{
-                  'text-red-400 bg-red-900/20': log.type === 'error',
+                  'bg-red-500/10 text-red-400': log.type === 'error',
                   'text-gray-300': log.type === 'info',
-                  'text-yellow-400': log.type === 'warning',
-                  'text-green-400': log.type === 'success'
+                  'bg-yellow-500/10 text-yellow-400': log.type === 'warning',
+                  'bg-green-500/10 text-green-400': log.type === 'success'
                 }"
               >
-                <span class="inline-block w-5 text-right">{{ index + 1 }}.</span>
+                <span class="inline-block text-gray-500 font-medium">{{ index + 1 }}.</span>
                 <span class="flex-1">{{ log.message }}</span>
               </div>
             </div>
           </div>
 
           <!-- 输入区域 -->
-          <div class="bg-gray-800 rounded-lg border border-gray-700 p-6">
+          <div class="bg-[#2a2a2a] rounded-xl border border-gray-800 p-6">
             <div class="flex items-center justify-between mb-4">
               <h2 class="text-lg font-medium">输入指令</h2>
-              <el-dropdown trigger="click">
-                <el-button size="small" type="info" text>
-                  <el-icon><More /></el-icon>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>清空输入</el-dropdown-item>
-                    <el-dropdown-item>保存模板</el-dropdown-item>
-                    <el-dropdown-item>载入模板</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
-            <el-input
-              v-model="userInput"
-              type="textarea"
-              :rows="6"
-              placeholder="请输入您的指令..."
-              resize="none"
-              class="mb-4 custom-input"
-            />
-            <div class="flex space-x-3">
-              <el-button
-                type="primary"
-                :loading="isExecuting"
-                @click="executeCommand"
-                class="flex-1"
+              <button 
+                class="p-1.5 rounded-lg hover:bg-gray-700/50 text-gray-400 hover:text-gray-300 transition-colors"
+                @click="showOptions = !showOptions"
               >
-                <template #icon>
-                  <el-icon><VideoPlay /></el-icon>
-                </template>
-                {{ isExecuting ? '执行中...' : '执行指令' }}
-              </el-button>
-              <el-button type="info" text>
-                <el-icon><RefreshRight /></el-icon>
-              </el-button>
+                <More class="w-4 h-4" />
+              </button>
+            </div>
+            <textarea
+              v-model="userInput"
+              rows="6"
+              placeholder="请输入您的指令..."
+              class="w-full px-4 py-3 bg-[#1a1a1a] border border-gray-800 rounded-lg text-gray-300 placeholder-gray-600 focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-colors resize-none mb-4"
+            ></textarea>
+            <div class="flex space-x-3">
+              <button
+                @click="executeCommand"
+                :disabled="isExecuting"
+                class="flex-1 px-6 py-2.5 bg-green-600 hover:bg-green-700 disabled:bg-green-800 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+              >
+                <VideoPlay v-if="!isExecuting" class="w-4 h-4" />
+                <div v-else class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <span>{{ isExecuting ? '执行中...' : '执行指令' }}</span>
+              </button>
+              <button 
+                class="p-2.5 rounded-lg hover:bg-gray-700/50 text-gray-400 hover:text-gray-300 transition-colors"
+              >
+                <RefreshRight class="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
 
         <!-- 右侧浏览器区域 -->
-        <div class="bg-gray-800 rounded-lg border border-gray-700">
-          <div class="p-4 border-b border-gray-700">
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+          <div class="p-4 border-b border-gray-100">
             <div class="flex items-center justify-between">
-              <h2 class="text-lg font-medium">浏览器操作</h2>
+              <h2 class="text-lg font-medium text-gray-900">浏览器操作</h2>
               <div class="flex space-x-2">
-                <div class="h-2 w-2 rounded-full bg-red-400"></div>
-                <div class="h-2 w-2 rounded-full bg-yellow-400"></div>
-                <div class="h-2 w-2 rounded-full bg-emerald-400"></div>
+                <div class="h-2.5 w-2.5 rounded-full bg-red-400"></div>
+                <div class="h-2.5 w-2.5 rounded-full bg-yellow-400"></div>
+                <div class="h-2.5 w-2.5 rounded-full bg-green-500"></div>
               </div>
             </div>
           </div>
           <div class="h-[calc(100vh-12rem)] p-4">
             <div 
-              class="h-full bg-gray-900 rounded border border-gray-700 p-4 overflow-y-auto custom-scrollbar"
+              class="h-full bg-gray-50 rounded-lg border border-gray-200 p-4 overflow-y-auto custom-scrollbar"
               v-html="browserContent"
             ></div>
           </div>
@@ -129,7 +126,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { ElMessage } from 'element-plus'
 import { Delete, Download, More, VideoPlay, RefreshRight } from '@element-plus/icons-vue'
 
 const userInput = ref('')
@@ -137,6 +133,7 @@ const logs = ref([])
 const browserContent = ref('')
 const isExecuting = ref(false)
 const wsStatus = ref('disconnected')
+const showOptions = ref(false)
 let ws = null
 
 const logAreaRef = ref(null)
@@ -179,7 +176,7 @@ const downloadLogs = () => {
 // 执行命令
 const executeCommand = async () => {
   if (!userInput.value.trim()) {
-    ElMessage.warning('请输入指令')
+    addLog('请输入指令', 'warning')
     return
   }
 
@@ -204,11 +201,9 @@ const executeCommand = async () => {
     console.log('服务器响应:', result)
     
     userInput.value = ''
-    ElMessage.success('指令已发送')
   } catch (error) {
     console.error('执行命令错误:', error)
     addLog(`执行失败: ${error.message}`, 'error')
-    ElMessage.error(`执行失败: ${error.message}`)
   } finally {
     isExecuting.value = false
   }
@@ -229,7 +224,6 @@ const connectWebSocket = () => {
       console.log('收到服务器消息:', event.data)
       const data = JSON.parse(event.data)
       if (data.type === 'log') {
-        // 根据消息内容设置不同的类型
         const type = data.message.toLowerCase().includes('error') ? 'error' 
           : data.message.toLowerCase().includes('warning') ? 'warning'
           : data.message.toLowerCase().includes('success') ? 'success'
@@ -275,66 +269,15 @@ onUnmounted(() => {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(31, 41, 55, 0.5);
+  background: transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(75, 85, 99, 0.5);
+  background: rgba(75, 85, 99, 0.2);
+  border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(107, 114, 128, 0.5);
-}
-
-.custom-input .el-textarea__inner {
-  background: rgba(17, 24, 39, 0.3) !important;
-  border-color: rgba(75, 85, 99, 0.5) !important;
-  color: #e5e7eb !important;
-}
-
-.custom-input .el-textarea__inner:focus {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
-}
-
-.el-button--primary {
-  background-color: #3b82f6 !important;
-  border-color: #3b82f6 !important;
-}
-
-.el-button--primary:hover {
-  background-color: #2563eb !important;
-  border-color: #2563eb !important;
-}
-
-.el-message {
-  background: #1f2937 !important;
-  border: 1px solid #374151 !important;
-  color: #e5e7eb !important;
-}
-
-.el-message--success .el-message__icon {
-  color: #10b981 !important;
-}
-
-.el-message--warning .el-message__icon {
-  color: #f59e0b !important;
-}
-
-.el-message--error .el-message__icon {
-  color: #ef4444 !important;
-}
-
-.el-dropdown-menu {
-  background: #1f2937 !important;
-  border: 1px solid #374151 !important;
-}
-
-.el-dropdown-menu__item {
-  color: #e5e7eb !important;
-}
-
-.el-dropdown-menu__item:hover {
-  background: #374151 !important;
+  background: rgba(75, 85, 99, 0.3);
 }
 </style> 
