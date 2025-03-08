@@ -12,7 +12,8 @@ export default defineConfig({
       },
       '/ws': {
         target: 'ws://doctorj.com.cn:8090',
-        ws: true
+        ws: true,
+        changeOrigin: true
       }
     }
   }

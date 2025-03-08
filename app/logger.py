@@ -1,32 +1,38 @@
-import sys
-from datetime import datetime
+import logging
+import os
+from logging.handlers import RotatingFileHandler
 
-from loguru import logger as _logger
+# 创建 logs 目录（如果不存在）
+logs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')
+os.makedirs(logs_dir, exist_ok=True)
 
-from app.config import PROJECT_ROOT
+# 配置日志格式
+log_format = logging.Formatter(
+    '%(asctime)s [%(levelname)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
+# 创建日志记录器
+logger = logging.getLogger('OpenManus')
+logger.setLevel(logging.INFO)
 
-_print_level = "INFO"
+# 添加控制台处理器
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(log_format)
+logger.addHandler(console_handler)
 
+# 添加文件处理器
+file_handler = RotatingFileHandler(
+    os.path.join(logs_dir, 'server.log'),
+    maxBytes=10*1024*1024,  # 10MB
+    backupCount=5,
+    encoding='utf-8'
+)
+file_handler.setFormatter(log_format)
+logger.addHandler(file_handler)
 
-def define_log_level(print_level="INFO", logfile_level="DEBUG", name: str = None):
-    """Adjust the log level to above level"""
-    global _print_level
-    _print_level = print_level
-
-    current_date = datetime.now()
-    formatted_date = current_date.strftime("%Y%m%d")
-    log_name = (
-        f"{name}_{formatted_date}" if name else formatted_date
-    )  # name a log with prefix name
-
-    _logger.remove()
-    _logger.add(sys.stderr, level=print_level)
-    _logger.add(PROJECT_ROOT / f"logs/{log_name}.log", level=logfile_level)
-    return _logger
-
-
-logger = define_log_level()
+# 导出日志记录器
+__all__ = ['logger']
 
 
 if __name__ == "__main__":
