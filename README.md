@@ -6,14 +6,83 @@
     <a href="https://discord.gg/6dn7Sa3a"><img src="https://dcbadge.vercel.app/api/server/DYn29wFk9z?style=flat" alt="Discord Follow"></a>
 </p>
 
-# OpenManus 🙋
-Manus is incredible, but OpenManus can achieve any ideas without an Invite Code 🛫!
+# OpenManus
 
-Our team members [@mannaandpoem](https://github.com/mannaandpoem) [@XiangJinyu](https://github.com/XiangJinyu) [@MoshiQAQ](https://github.com/MoshiQAQ) [@didiforgithub](https://github.com/didiforgithub) from [@MetaGPT](https://github.com/geekan/MetaGPT) built it within 3 hours!
+一个通用的智能体系统，能够使用多种工具解决各种任务。
 
-It's a simple implementation, so we welcome any suggestions, contributions, and feedback!
+## 项目结构
 
-Enjoy your own agent with OpenManus!
+```
+openmanus/
+├── frontend/          # 前端代码 (端口: 8090)
+├── backend/           # 后端代码 (端口: 8000)
+│   ├── api/          # API 接口层
+│   ├── core/         # 核心业务逻辑
+│   └── agent/        # Agent 相关代码
+├── config/           # 配置文件
+├── docs/            # 文档
+└── scripts/         # 部署和工具脚本
+```
+
+## 快速开始
+
+### 使用 Docker Compose
+
+1. 克隆项目：
+```bash
+git clone https://github.com/mannaandpoem/OpenManus.git
+cd OpenManus
+```
+
+2. 配置环境：
+- 复制 `config/config.example.toml` 到 `config/config.toml`
+- 更新配置文件中的必要设置（如 API keys）
+
+3. 启动服务：
+```bash
+docker-compose up -d
+```
+
+现在可以访问：
+- 前端界面：http://localhost:8090
+- 后端API：http://localhost:8000
+
+### 本地开发
+
+1. 后端设置：
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -e .
+```
+
+2. 前端设置：
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 使用方法
+
+1. 打开浏览器访问 http://localhost:8090
+2. 在界面中输入指令
+3. 系统会实时返回执行结果
+
+## 配置说明
+
+主要配置文件位于 `config/config.toml`，包含：
+- LLM 配置
+- Agent 配置
+- 其他系统设置
+
+## 贡献指南
+
+欢迎提交 Pull Request 或创建 Issue。
+
+## 许可证
+
+MIT License
 
 ## Project Demo
 

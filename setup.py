@@ -12,7 +12,8 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/mannaandpoem/OpenManus",
-    packages=find_packages(),
+    package_dir={"": "backend"},
+    packages=find_packages(where="backend"),
     install_requires=[
         "pydantic~=2.10.4",
         "openai~=1.58.1",
@@ -32,6 +33,8 @@ setup(
         "aiofiles~=24.1.0",
         "pydantic_core~=2.27.2",
         "colorama~=0.4.6",
+        "fastapi~=0.110.0",
+        "websockets~=12.0",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -42,7 +45,7 @@ setup(
     python_requires=">=3.12",
     entry_points={
         "console_scripts": [
-            "openmanus=main:main",
+            "openmanus=backend.main:main",
         ],
     },
 )
