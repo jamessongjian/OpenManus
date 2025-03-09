@@ -1,11 +1,11 @@
-from app.agent.base import BaseAgent
-from app.agent.planning import PlanningAgent
-from app.agent.react import ReActAgent
-from app.agent.swe import SWEAgent
-from app.agent.toolcall import ToolCallAgent
+from backend.agent.base import BaseAgent
+from backend.agent.planning import PlanningAgent
+from backend.agent.react import ReActAgent
+from backend.agent.swe import SWEAgent
+from backend.agent.toolcall import ToolCallAgent
 from typing import Callable, Optional, Any
 import asyncio
-from app.config import Config
+from backend.config import Config
 
 
 __all__ = [

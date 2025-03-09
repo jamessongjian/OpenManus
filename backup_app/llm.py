@@ -10,9 +10,9 @@ from openai import (
 )
 from tenacity import retry, stop_after_attempt, wait_random_exponential
 
-from app.config import LLMSettings, config
-from app.logger import logger  # Assuming a logger is set up in your app
-from app.schema import Message
+from backend.config import LLMSettings, config
+from backend.logger import logger  # Assuming a logger is set up in your app
+from backend.schema import Message
 
 
 class LLM:

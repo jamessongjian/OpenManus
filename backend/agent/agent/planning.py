@@ -3,11 +3,11 @@ from typing import Dict, List, Literal, Optional
 
 from pydantic import Field, model_validator
 
-from app.agent.toolcall import ToolCallAgent
-from app.logger import logger
-from app.prompt.planning import NEXT_STEP_PROMPT, PLANNING_SYSTEM_PROMPT
-from app.schema import Message, ToolCall
-from app.tool import PlanningTool, Terminate, ToolCollection
+from backend.agent.toolcall import ToolCallAgent
+from backend.logger import logger
+from backend.prompt.planning import NEXT_STEP_PROMPT, PLANNING_SYSTEM_PROMPT
+from backend.schema import Message, ToolCall
+from backend.tool import PlanningTool, Terminate, ToolCollection
 
 
 class PlanningAgent(ToolCallAgent):

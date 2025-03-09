@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel
 
-from app.agent.base import BaseAgent
+from backend.agent.base import BaseAgent
 
 
 class FlowType(str, Enum):

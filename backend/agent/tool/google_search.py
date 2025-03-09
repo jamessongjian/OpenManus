@@ -3,7 +3,7 @@ from typing import List
 
 from googlesearch import search
 
-from app.tool.base import BaseTool
+from backend.tool.base import BaseTool
 
 
 class GoogleSearch(BaseTool):

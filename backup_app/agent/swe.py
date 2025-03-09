@@ -2,9 +2,9 @@ from typing import List
 
 from pydantic import Field
 
-from app.agent.toolcall import ToolCallAgent
-from app.prompt.swe import NEXT_STEP_TEMPLATE, SYSTEM_PROMPT
-from app.tool import Bash, StrReplaceEditor, Terminate, ToolCollection
+from backend.agent.toolcall import ToolCallAgent
+from backend.prompt.swe import NEXT_STEP_TEMPLATE, SYSTEM_PROMPT
+from backend.tool import Bash, StrReplaceEditor, Terminate, ToolCollection
 
 
 class SWEAgent(ToolCallAgent):

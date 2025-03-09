@@ -1,12 +1,12 @@
 from pydantic import Field
 
-from app.agent.toolcall import ToolCallAgent
-from app.prompt.manus import NEXT_STEP_PROMPT, SYSTEM_PROMPT
-from app.tool import Terminate, ToolCollection
-from app.tool.browser_use_tool import BrowserUseTool
-from app.tool.file_saver import FileSaver
-from app.tool.google_search import GoogleSearch
-from app.tool.python_execute import PythonExecute
+from backend.agent.toolcall import ToolCallAgent
+from backend.prompt.manus import NEXT_STEP_PROMPT, SYSTEM_PROMPT
+from backend.tool import Terminate, ToolCollection
+from backend.tool.browser_use_tool import BrowserUseTool
+from backend.tool.file_saver import FileSaver
+from backend.tool.google_search import GoogleSearch
+from backend.tool.python_execute import PythonExecute
 
 
 class Manus(ToolCallAgent):

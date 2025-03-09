@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Dict
 
 from pydantic import BaseModel, Field
-from openmanus.agent.manus import Manus
-from openmanus.core.llm import LLM
-from openmanus.server.main import app
+from backend.agent.agent.manus import Manus
+from backend.agent.llm import LLM
+from backend.agent.server.main import app
 
 
 def get_project_root() -> Path:

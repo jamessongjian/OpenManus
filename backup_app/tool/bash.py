@@ -2,8 +2,8 @@ import asyncio
 import os
 from typing import Optional
 
-from app.exceptions import ToolError
-from app.tool.base import BaseTool, CLIResult, ToolResult
+from backend.exceptions import ToolError
+from backend.tool.base import BaseTool, CLIResult, ToolResult
 
 
 _BASH_DESCRIPTION = """Execute a bash command in the terminal.

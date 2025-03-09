@@ -1,7 +1,7 @@
 import threading
 from typing import Dict
 
-from app.tool.base import BaseTool
+from backend.tool.base import BaseTool
 
 
 class PythonExecute(BaseTool):

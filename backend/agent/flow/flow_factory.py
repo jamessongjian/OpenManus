@@ -1,8 +1,8 @@
 from typing import Dict, List, Union
 
-from app.agent.base import BaseAgent
-from app.flow.base import BaseFlow, FlowType
-from app.flow.planning import PlanningFlow
+from backend.agent.base import BaseAgent
+from backend.flow.base import BaseFlow, FlowType
+from backend.flow.planning import PlanningFlow
 
 
 class FlowFactory:

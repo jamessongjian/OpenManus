@@ -3,11 +3,11 @@ from typing import Any, List, Literal
 
 from pydantic import Field
 
-from app.agent.react import ReActAgent
-from app.logger import logger
-from app.prompt.toolcall import NEXT_STEP_PROMPT, SYSTEM_PROMPT
-from app.schema import AgentState, Message, ToolCall
-from app.tool import CreateChatCompletion, Terminate, ToolCollection
+from backend.agent.react import ReActAgent
+from backend.logger import logger
+from backend.prompt.toolcall import NEXT_STEP_PROMPT, SYSTEM_PROMPT
+from backend.schema import AgentState, Message, ToolCall
+from backend.tool import CreateChatCompletion, Terminate, ToolCollection
 
 
 TOOL_CALL_REQUIRED = "Tool calls required but none provided"

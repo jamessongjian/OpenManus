@@ -1,8 +1,8 @@
 import asyncio
 
-from app.agent.manus import Manus
-from app.flow.base import FlowType
-from app.flow.flow_factory import FlowFactory
+from backend.agent.agent.manus import Manus
+from backend.flow.base import FlowType
+from backend.flow.flow_factory import FlowFactory
 
 
 async def run_flow():

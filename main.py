@@ -1,7 +1,7 @@
 import asyncio
 
-from app.agent.manus import Manus
-from app.logger import logger
+from backend.agent.manus import Manus
+from backend.agent.logger import logger
 
 
 async def main():
