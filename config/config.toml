@@ -20,3 +20,8 @@ temperature = 0.0
 model = "deepseek-ai/DeepSeek-V2.5"
 base_url = "https://api.siliconflow.cn/v1"
 api_key = "sk-uznzepubsziqtxemeitdfvlrnbwmiyrpfmdmehndjbfculky"
+
+# Server configuration
+[server]
+host = "0.0.0.0"  # 监听所有网络接口
+port = 8000       # 后端API端口

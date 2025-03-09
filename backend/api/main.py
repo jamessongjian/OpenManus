@@ -3,11 +3,25 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import asyncio
+import tomllib
+from pathlib import Path
 
 from backend.agent.agent.manus import Manus
 from backend.agent.logger import logger
 
 app = FastAPI()
+
+# 读取配置文件
+def load_config():
+    config_path = Path(__file__).resolve().parent.parent.parent / "config" / "config.toml"
+    if not config_path.exists():
+        config_path = config_path.parent / "config.example.toml"
+    
+    with open(config_path, "rb") as f:
+        return tomllib.load(f)
+
+config = load_config()
+server_config = config.get("server", {"host": "0.0.0.0", "port": 8000})
 
 # 配置CORS
 app.add_middleware(
@@ -71,4 +85,8 @@ async def execute_command(request: ExecuteRequest):
         return {"status": "success", "result": result}
     except Exception as e:
         logger.error(f"执行命令出错: {str(e)}")
-        return {"status": "error", "message": str(e)} 
+        return {"status": "error", "message": str(e)}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host=server_config["host"], port=server_config["port"]) 
